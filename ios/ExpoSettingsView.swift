@@ -1,38 +1,37 @@
+
 import ExpoModulesCore
-import WebKit
+import SwiftUI
 
-// This view will be used as a native component. Make sure to inherit from `ExpoView`
-// to apply the proper styling (e.g. border radius and shadows).
+// Define the ExpoSettingsView class to show only the SwiftUI button
 class ExpoSettingsView: ExpoView {
-  let webView = WKWebView()
-  let onLoad = EventDispatcher()
-  var delegate: WebViewDelegate?
+    var buttonHostingController: UIHostingController<SwiftUIButtonView>?
 
-  required init(appContext: AppContext? = nil) {
-    super.init(appContext: appContext)
-    clipsToBounds = true
-    delegate = WebViewDelegate { url in
-      self.onLoad(["url": url])
+    required init(appContext: AppContext? = nil) {
+        super.init(appContext: appContext)
+        clipsToBounds = true
+
+        // Set up SwiftUI button view
+        let buttonView = SwiftUIButtonView(
+            title: "Press Me",
+            onPress: {
+                print("Button Pressed!")
+                // Add your button press logic here
+            }
+        )
+        
+        // Host the SwiftUI view using UIHostingController
+        buttonHostingController = UIHostingController(rootView: buttonView)
+        
+        if let buttonHostingView = buttonHostingController?.view {
+            addSubview(buttonHostingView)
+        }
     }
-    webView.navigationDelegate = delegate
-    addSubview(webView)
-  }
 
-  override func layoutSubviews() {
-    webView.frame = bounds
-  }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        // Layout the SwiftUI button to fill the entire view
+        buttonHostingController?.view.frame = bounds
+    }
 }
 
-class WebViewDelegate: NSObject, WKNavigationDelegate {
-  let onUrlChange: (String) -> Void
-
-  init(onUrlChange: @escaping (String) -> Void) {
-    self.onUrlChange = onUrlChange
-  }
-
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation) {
-    if let url = webView.url {
-      onUrlChange(url.absoluteString)
-    }
-  }
-}

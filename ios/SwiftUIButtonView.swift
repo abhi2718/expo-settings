@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct SwiftUIButtonView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    var title: String
+    var onPress: () -> Void
 
-#Preview {
-    SwiftUIButtonView()
+    var body: some View {
+        Button(action: {
+            onPress()
+        }) {
+            Text(title)
+                .frame(width: 100, height: 50)
+                .foregroundColor(.white)
+                .background(Color.red)
+                .cornerRadius(8)
+        }
+        .padding()
+        
+    }
 }

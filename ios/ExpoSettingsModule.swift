@@ -36,13 +36,13 @@ public class ExpoSettingsModule: Module {
     // view definition: Prop, Events.
     View(ExpoSettingsView.self) {
       // Defines a setter for the `url` prop.
-      Prop("url") { (view: ExpoSettingsView, url: URL) in
-        if view.webView.url != url {
-          view.webView.load(URLRequest(url: url))
-        }
-      }
+      // Prop("url") { (view: ExpoSettingsView, url: URL) in
+      //   if view.webView.url != url {
+      //     view.webView.load(URLRequest(url: url))
+      //   }
+      // }
 
-      Events("onLoad")
+      // Events("onLoad")
     }
   }
 }
